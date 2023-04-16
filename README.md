@@ -5,7 +5,7 @@ The app follows the MVVM architecture pattern and includes a custom line chart c
 
 ## Screenshots
 
-[<img src="/readme/homescreen.gif" align="start"
+[<img src="/readme/homescreen.gif" align="left"
 width="200"
 hspace="10" vspace="10">](/readme/homescreen.gif)
 
