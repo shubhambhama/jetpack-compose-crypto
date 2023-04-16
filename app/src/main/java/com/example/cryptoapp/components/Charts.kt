@@ -27,11 +27,10 @@ fun LineChart(modifier: Modifier = Modifier,
               shouldDrawLiveDot: Boolean = true,
               animationKey: Any? = Unit,
               customXTarget: Int = 0) {
-    val yVal = yAxis
     val x = remember {
         Animatable(0f)
     }
-    val xTarget = if (customXTarget > 0) customXTarget.toFloat() else (yVal.size - 1).toFloat()
+    val xTarget = if (customXTarget > 0) customXTarget.toFloat() else (yAxis.size - 1).toFloat()
     LaunchedEffect(animationKey) {
         x.animateTo(targetValue = xTarget,
                 animationSpec = tween(durationMillis = if (shouldAnimate) 500 else 0,
@@ -51,17 +50,17 @@ fun LineChart(modifier: Modifier = Modifier,
     Canvas(modifier = modifier.padding(8.dp)) {
         val path = Path()
         val xBounds = Pair(0f, xTarget)
-        val yBounds = getBounds(yVal)
+        val yBounds = getBounds(yAxis)
 
         val scaleX = size.width / (xBounds.second - xBounds.first)
         val scaleY = size.height / (yBounds.second - yBounds.first)
         val yMove = yBounds.first * scaleY
-        val interval = (0..min(yVal.size - 1, x .value.toInt()))
+        val interval = (0..min(yAxis.size - 1, x .value.toInt()))
         val last = interval.last()
 
         interval.forEach { value ->
             val xPoint = value * scaleX
-            val yPoint = size.height - (yVal[value] * scaleY) + yMove
+            val yPoint = size.height - (yAxis[value] * scaleY) + yMove
             if (value == 0) {
                 path.moveTo(0f, yPoint)
                 return@forEach
@@ -73,7 +72,7 @@ fun LineChart(modifier: Modifier = Modifier,
                 style = Stroke(width = lineWidth))
         if (shouldDrawLiveDot) {
             drawCircle(lineColors.first(), radius,
-                    Offset(last * scaleX, size.height - (yVal[last] * scaleY) + yMove), opacity)
+                    Offset(last * scaleX, size.height - (yAxis[last] * scaleY) + yMove), opacity)
         }
     }
 }
@@ -83,7 +82,9 @@ fun getBounds(list: List<Float>): Pair<Float, Float> {
     var max = -Float.MAX_VALUE
 
     list.forEach {
+        // returns the smaller value between the receiver float and the provided float value.
         min = min.coerceAtMost(it)
+        // returns the smaller value between the receiver float and the provided float value.
         max = max.coerceAtLeast(it)
     }
     return Pair(min, max)

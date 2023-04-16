@@ -1,8 +1,6 @@
-# jetpack_compose_crypto
+# Crypto - Android App
 
-# Crypto- Android App
-
-This is a sample Android app that displays cryptocurrency prices and trends using Jetpack Compose UI toolkit along with Retrofit and Room libraries. 
+This is a sample Android app that displays cryptocurrency prices and graph using Jetpack Compose UI toolkit along with Retrofit and Room libraries. 
 The app follows the MVVM architecture pattern and includes a custom line chart component.
 
 ## Screenshots

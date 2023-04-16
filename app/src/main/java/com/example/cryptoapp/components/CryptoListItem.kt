@@ -19,6 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.cryptoapp.InteractionsEvent
 import com.example.cryptoapp.data.db.Crypto
 import com.example.cryptoapp.ui.theme.gradientGreenColors
 import com.example.cryptoapp.ui.theme.gradientRedColors
@@ -28,12 +29,13 @@ import com.example.cryptoapp.util.roundToThreeDecimal
 import com.example.cryptoapp.util.roundToTwoDecimal
 
 @Composable
-fun CryptoListItem(crypto: Crypto, isFav: Boolean = false) {
+fun CryptoListItem(crypto: Crypto, isFav: Boolean = false,
+                   interactionsEvent: (InteractionsEvent) -> Unit) {
     val context = LocalContext.current
     Row(modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp)
-            .clickable(onClick = {}),
+            .clickable(onClick = { interactionsEvent(InteractionsEvent.OpenDetailScreen(crypto)) }),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(model = ImageRequest.Builder(context).data(crypto.image).build(),

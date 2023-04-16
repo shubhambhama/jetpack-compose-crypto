@@ -19,25 +19,26 @@ import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.itemsIndexed
+import com.example.cryptoapp.InteractionsEvent
 import com.example.cryptoapp.components.CryptoListItem
 import com.example.cryptoapp.data.db.Crypto
 import com.example.cryptoapp.util.CryptoLoadingView
 
 @Composable
-fun HomeScreen() {
+fun HomeScreen(interactionsEvent: (InteractionsEvent) -> Unit = {}) {
     val viewModel: HomeScreenViewModel = viewModel(
             factory = HomeScreenViewModelFactory(LocalContext.current)
     )
     val listScrollState = rememberLazyListState()
     val pagingItems = viewModel.getAllCryptos().collectAsLazyPagingItems()
     val cryptos = viewModel.cryptoLiveData.observeAsState(emptyList())
-    Scaffold() { paddingValue ->
+    Scaffold { paddingValue ->
         Column(modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValue)) {
             Header()
             CryptoList(pagingItems = pagingItems, cryptos = cryptos.value,
-                    listScrollState = listScrollState)
+                    listScrollState = listScrollState, interactionsEvent)
         }
     }
 }
@@ -56,22 +57,23 @@ fun Header() {
 @Composable
 fun CryptoList(pagingItems: LazyPagingItems<Crypto>,
                cryptos: List<Crypto>,
-               listScrollState: LazyListState) {
+               listScrollState: LazyListState,
+               interactionsEvent: (InteractionsEvent) -> Unit) {
     val context = LocalContext.current
     LazyColumn(state = listScrollState) {
         itemsIndexed(pagingItems) { _, crypto ->
             crypto?.let {
                 val isFav = cryptos.contains(crypto)
-                CryptoListItem(crypto, isFav)
+                CryptoListItem(crypto, isFav, interactionsEvent)
             }
         }
         pagingItems.apply {
             when {
-                loadState.refresh is LoadState.Loading -> item {
-                    CryptoLoadingView(context = context)
-                }
-                loadState.append is LoadState.Loading -> {
-                    item { CryptoLoadingView(context = context) }
+                (loadState.refresh is LoadState.Loading) ||
+                        (loadState.append is LoadState.Loading) -> {
+                    item {
+                        CryptoLoadingView(context = context)
+                    }
                 }
             }
         }
