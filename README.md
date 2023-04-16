@@ -13,7 +13,7 @@ hspace="10" vspace="10">](/readme/homescreen.gif)
 
 The android app lets you:
 - Display current prices for Bitcoin, Ethereum, Litecoin etc.
-- Display price trends using custom line chart
+- Display price trends using custom line chart and bar chart.
 - Save favorite cryptocurrencies and view them in a separate screen.
 
 ## Libraries
@@ -21,7 +21,6 @@ The android app lets you:
 - Jetpack Compose: A modern UI toolkit for building native Android UIs.
 - Retrofit: A type-safe HTTP client for Android and Java.
 - Room: A database library for Android that provides an abstraction layer over SQLite.
-- MPAndroidChart: A library for creating custom charts and graphs in Android.
 
 ## Architecture
 
@@ -31,8 +30,8 @@ The app follows the MVVM architecture pattern. The main components are:
 - Repository: Acts as a single source of truth for data by communicating with the local database and remote API using Retrofit.
 - Database: Implemented using Room library to store and retrieve cryptocurrency data.
 
-## Custom Line Chart
-The app includes a custom line chart component that displays real time price trends.
+## Custom Graphs
+The app includes a custom line chart and bar chart component that displays real time price trends.
 
 ## Usage
 To use the app, clone the repository and open the project in Android Studio. Build and run the app on an emulator or physical device.

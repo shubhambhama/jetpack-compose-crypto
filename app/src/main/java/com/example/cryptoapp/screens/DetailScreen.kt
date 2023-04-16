@@ -4,6 +4,9 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.ScrollState
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.Card
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -16,9 +19,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import com.example.cryptoapp.components.BarChart
+import com.example.cryptoapp.components.LineChart
 import com.example.cryptoapp.data.db.Crypto
+import com.example.cryptoapp.ui.theme.gradientGreenColors
+import com.example.cryptoapp.ui.theme.gradientPurpleColors
+import com.example.cryptoapp.ui.theme.gradientRedColors
 import com.example.cryptoapp.ui.theme.green700
-import com.example.cryptoapp.ui.theme.red500
 import com.example.cryptoapp.util.roundToTwoDecimal
 
 @Composable
@@ -27,6 +34,12 @@ fun CryptoDetailScreen(crypto: Crypto) {
         Box(Modifier.padding(it)) {
             val scrollState = rememberScrollState()
             Header(crypto = crypto, scrollState = scrollState)
+            Column(modifier = Modifier
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp)
+                    .verticalScroll(state = scrollState)) {
+                Spacer(modifier = Modifier.height(200.dp))
+                Charts(crypto)
+            }
         }
     }
 }
@@ -53,5 +66,24 @@ fun Header(crypto: Crypto, scrollState: ScrollState) {
                 color = if (crypto.dailyChange > 0) green700
                 else Color.Red,
                 fontWeight = FontWeight.ExtraBold)
+    }
+}
+
+@Composable
+fun Charts(crypto: Crypto) {
+    Card(modifier = Modifier.padding(vertical = 8.dp), elevation = 8.dp,
+            shape = RoundedCornerShape(4.dp)) {
+        Column {
+            LineChart(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(100.dp), yAxis = crypto.chartData,
+                    lineColors = if (crypto.dailyChange > 0) gradientGreenColors else gradientRedColors)
+            Spacer(modifier = Modifier.height(10.dp))
+            BarChart(modifier = Modifier
+                    .fillMaxWidth()
+                    .height(120.dp),
+                    yAxisValue = crypto.chartData,
+                    barColors = gradientPurpleColors)
+        }
     }
 }
