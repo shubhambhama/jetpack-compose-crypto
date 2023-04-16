@@ -70,7 +70,7 @@ fun CryptoListItem(crypto: Crypto, isFav: Boolean = false,
             }
         }) {
             Icon(imageVector = Icons.Default.Favorite, contentDescription = null,
-            tint = if (isFav) Color.Red else MaterialTheme.colors.onSurface, modifier = Modifier.size(16.dp))
+            tint = if (isFav) Color.Red else MaterialTheme.colors.onSurface, modifier = Modifier.size(24.dp))
         }
     }
 }

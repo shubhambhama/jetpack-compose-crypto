@@ -39,6 +39,8 @@ fun CryptoDetailScreen(crypto: Crypto) {
                     .verticalScroll(state = scrollState)) {
                 Spacer(modifier = Modifier.height(200.dp))
                 Charts(crypto)
+                Stats(crypto = crypto)
+                Spacer(modifier = Modifier.height(100.dp))
             }
         }
     }
@@ -85,5 +87,36 @@ fun Charts(crypto: Crypto) {
                     yAxisValue = crypto.chartData,
                     barColors = gradientPurpleColors)
         }
+    }
+}
+
+@Composable
+fun Stats(crypto: Crypto) {
+    val customMod = Modifier.padding(bottom = 16.dp, top = 4.dp)
+    Text(text = "Statistics", modifier = Modifier.padding(top = 24.dp, bottom = 8.dp),
+            style = MaterialTheme.typography.h5)
+    Card(modifier = Modifier.padding(vertical = 8.dp), elevation = 8.dp,
+            shape = RoundedCornerShape(4.dp)) {
+        Row(modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp)) {
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = "24 hr High", style = MaterialTheme.typography.subtitle2)
+                Text(text = crypto.high.roundToTwoDecimal(), modifier = customMod)
+                Text(text = "24 hr Low", style = MaterialTheme.typography.subtitle2)
+                Text(text = crypto.low.roundToTwoDecimal(), modifier = customMod)
+                Text(text = "24 hr Change", style = MaterialTheme.typography.subtitle2)
+                Text(text = crypto.dailyChange.roundToTwoDecimal(), modifier = customMod)
+            }
+            Column(modifier = Modifier.weight(1f)) {
+                Text(text = "Volume", style = MaterialTheme.typography.subtitle2)
+                Text(text = crypto.volume.toString(), modifier = customMod)
+                Text(text = "Supply", style = MaterialTheme.typography.subtitle2)
+                Text(text = crypto.supply.toString(), modifier = customMod)
+                Text(text = "Market Cap", style = MaterialTheme.typography.subtitle2)
+                Text(text = crypto.marketCap.toString(), modifier = customMod)
+            }
+        }
+
     }
 }
